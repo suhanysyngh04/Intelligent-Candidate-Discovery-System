@@ -1,0 +1,93 @@
+# Redrob Hackathon — Submission Metadata
+#
+# NOTE: this repository was produced as a worked solution / reference
+# implementation. Contact, team, and portal-facing fields below are
+# placeholders — replace with real values before an actual portal submission.
+
+# ============================================================================
+# Team identity
+# ============================================================================
+team_name: "REPLACE_WITH_TEAM_NAME"
+
+primary_contact:
+  name: "REPLACE_WITH_NAME"
+  email: "REPLACE_WITH_EMAIL"
+  phone: "+91-XXXXXXXXXX"
+
+team_members:
+  - name: "REPLACE_WITH_NAME"
+    email: "REPLACE_WITH_EMAIL"
+    role: "ML Engineer"
+
+# ============================================================================
+# Code and reproducibility
+# ============================================================================
+github_repo: "https://github.com/REPLACE_WITH_USERNAME/REPLACE_WITH_REPO"
+
+sandbox_link: "REPLACE_WITH_SANDBOX_URL"
+# See sandbox/README.md in this repo for the small-sample reproduction setup
+# (a 100-candidate sample run of src/rank.py) intended to back this link.
+
+reproduce_command: "python src/rank.py --candidates ./data/candidates.jsonl --out ./submission.csv"
+
+# ============================================================================
+# Compute environment
+# ============================================================================
+compute:
+  platform: "Linux sandbox, single CPU core, ~4GB RAM available (more constrained than the 16GB/CPU-only competition target)"
+  cpu_cores: 1
+  ram_gb: 4
+  python_version: "3.12.3"
+  os: "Ubuntu (containerized)"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
+
+# ============================================================================
+# AI tools declaration
+# ============================================================================
+ai_tools_used:
+  - "Claude"
+
+ai_usage_summary: |
+  Claude was used throughout: exploring and profiling the full 100K-candidate
+  dataset (title/skill/company/location distributions, honeypot fingerprint
+  discovery, behavioral-twin discovery, narrative-pattern false-positive
+  validation), architecture design, and writing/iterating on the scoring code,
+  tests, and documentation. No candidate data was sent to any external LLM API
+  as part of the ranking pipeline itself -- src/rank.py runs fully offline using
+  only scikit-learn TF-IDF and pure-Python rule-based feature scoring, per the
+  competition's no-network-during-ranking constraint.
+
+# ============================================================================
+# Approach summary
+# ============================================================================
+methodology_summary: |
+  Hybrid scorer: TF-IDF cosine similarity (JD vs. candidate headline+summary+
+  career-history text, skills deliberately excluded to avoid double-counting
+  keyword presence) combined with seven structured features -- title relevance,
+  trust-adjusted skill matching (proficiency x duration, which is also the
+  honeypot fingerprint), a hand-validated career-narrative regex scanner for
+  "plain-language Tier 5" candidates, experience-band fit, product-vs-consulting
+  company history (the JD's explicit IT-services disqualifier), location tier,
+  and notice period. Six multiplicative penalty factors catch keyword-stuffing,
+  CV/speech-without-NLP profiles, title-chasing, no-recent-code seniors, and
+  self-reported-vs-platform-assessed skill mismatches. A final multiplicative
+  availability modifier (recency, recruiter response rate, interview completion,
+  open-to-work flag) discounts otherwise-strong candidates who are behaviorally
+  unreachable, without ever letting availability alone rescue a poor fit.
+  Honeypots (proficiency="expert" + duration_months=0, a confirmed bimodal
+  fingerprint found in exactly 21 of 100K candidates) are hard-suppressed.
+  Every non-obvious rule was derived by querying the full dataset first; see
+  docs/data_analysis.md. Runtime: ~90s for 100K candidates on a single CPU core.
+
+# ============================================================================
+# Declarations
+# ============================================================================
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
