@@ -7,24 +7,18 @@
 # ============================================================================
 # Team identity
 # ============================================================================
-team_name: "REPLACE_WITH_TEAM_NAME"
+team_name: "Solvv"
 
 primary_contact:
-  name: "REPLACE_WITH_NAME"
-  email: "REPLACE_WITH_EMAIL"
-  phone: "+91-XXXXXXXXXX"
-
-team_members:
-  - name: "REPLACE_WITH_NAME"
-    email: "REPLACE_WITH_EMAIL"
-    role: "ML Engineer"
+  name: "Suhani Singh"
+  email: "f20230820@pilani.bits-pilani.ac.in"
 
 # ============================================================================
 # Code and reproducibility
 # ============================================================================
-github_repo: "https://github.com/REPLACE_WITH_USERNAME/REPLACE_WITH_REPO"
+github_repo: "https://github.com/suhanysyngh04/Intelligent-Candidate-Discovery-System"
 
-sandbox_link: "REPLACE_WITH_SANDBOX_URL"
+sandbox_link: "https://intelligent-candidate-discovery-system-vkjptso6hhtcro3cdj6icw.streamlit.app"
 # See sandbox/README.md in this repo for the small-sample reproduction setup
 # (a 100-candidate sample run of src/rank.py) intended to back this link.
 
